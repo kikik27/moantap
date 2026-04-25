@@ -73,7 +73,7 @@ export default function MoanTap() {
       if (points <= 0) return;
 
       const id = Date.now() + Math.random();
-      setFloatingPoints((prev) => [...prev.slice(-8), { id, value: points, x, y }]);
+      setFloatingPoints((prev) => [...prev.slice(-8), { id, value: Math.floor(1 * 1), x, y }]);
       setTimeout(() => {
         setFloatingPoints((prev) => prev.filter((p) => p.id !== id));
       }, 700);
