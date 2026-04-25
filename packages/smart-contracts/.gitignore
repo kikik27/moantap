@@ -1,0 +1,13 @@
+# Foundry build output
+out/
+cache/
+
+# Dependencies (restored via `forge install`)
+lib/
+
+# Environment
+.env
+
+# Coverage
+lcov.info
+coverage/
