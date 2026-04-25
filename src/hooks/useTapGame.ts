@@ -10,7 +10,6 @@ import {
   MAX_ENERGY,
   ENERGY_REGEN_INTERVAL,
 } from '@/lib/tapLogic';
-import { useUser } from '@/contexts/UserContext';
 import { createBotDetector } from '@/hooks/useBotDetection';
 
 export function useTapGame() {
@@ -43,7 +42,6 @@ export function useTapGame() {
   const maxComboRef = useRef(0)
   const sessionStartRef = useRef(Date.now())
   const submittedRef = useRef(false)
-  const botDetection = useMemo(() => createBotDetector(), [])
 
   // Energy regen — returns amount gained so component can show floating text
   const onEnergyRegenRef = useRef<((amount: number) => void) | null>(null)

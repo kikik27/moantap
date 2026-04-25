@@ -4,9 +4,8 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
-import { useCallback, useState } from 'react';
-import { useUserStore } from '@/stores/userStore';
 import { useCallback, useRef, useState } from 'react';
+import { useUserStore } from '@/stores/userStore';
 import { useGameFeedback } from '@/hooks/useGameFeedback';
 import { useTapGame } from '@/hooks/useTapGame';
 import { usePvPSocket, type PvPPhase } from '@/hooks/usePvPSocket';
