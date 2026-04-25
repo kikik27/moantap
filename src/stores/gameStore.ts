@@ -15,17 +15,21 @@ interface GameState {
   maxEnergy: number
   combo: number
   lastTapTime: number
+  botStrikes: number
+  botPausedUntil: number
 
   // Derived (not persisted, computed on read)
   multiplier: number
   moanState: MoanState
   hasEnergy: boolean
+  isBotPaused: boolean
 
   // Actions
   tap: () => number
   regenEnergy: () => number
   resetCombo: () => void
   resetGame: () => void
+  addBotStrike: (reason: string) => void
 }
 
 export const useGameStore = create<GameState>()(
@@ -36,6 +40,8 @@ export const useGameStore = create<GameState>()(
       maxEnergy: MAX_ENERGY,
       combo: 0,
       lastTapTime: 0,
+      botStrikes: 0,
+      botPausedUntil: 0,
 
       get multiplier() {
         return calculateMultiplier(get().combo)
@@ -45,6 +51,9 @@ export const useGameStore = create<GameState>()(
       },
       get hasEnergy() {
         return get().energy > 0
+      },
+      get isBotPaused() {
+        return Date.now() < get().botPausedUntil
       },
 
       tap: () => {
@@ -79,8 +88,18 @@ export const useGameStore = create<GameState>()(
         set({ combo: 0 })
       },
 
+      addBotStrike: (reason: string) => {
+        const strikes = get().botStrikes + 1
+        const penalty = strikes === 1 ? 10_000 : 30_000
+        set({
+          botStrikes: strikes,
+          botPausedUntil: Date.now() + penalty,
+          combo: 0,
+        })
+      },
+
       resetGame: () => {
-        set({ score: 0, energy: MAX_ENERGY, combo: 0, lastTapTime: 0 })
+        set({ score: 0, energy: MAX_ENERGY, combo: 0, lastTapTime: 0, botStrikes: 0, botPausedUntil: 0 })
       },
     }),
     {
@@ -88,6 +107,7 @@ export const useGameStore = create<GameState>()(
       partialize: (state) => ({
         score: state.score,
         energy: state.energy,
+        botStrikes: state.botStrikes,
       }),
     },
   ),

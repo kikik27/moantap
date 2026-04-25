@@ -41,7 +41,7 @@ function PulseOrb() {
 
 export default function PvPMatchmaking({ onCancel }: PvPMatchmakingProps) {
   return (
-    <div className="flex flex-col items-center gap-8 py-16">
+    <div className="flex flex-1 flex-col items-center justify-center gap-8">
       <PulseOrb />
 
       <div className="flex flex-col items-center gap-2">
