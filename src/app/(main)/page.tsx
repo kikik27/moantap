@@ -9,6 +9,8 @@ import { useUser } from '@/contexts/UserContext';
 import { useTapGame } from '@/hooks/useTapGame';
 import { colors, gradients, shadows, spacing } from '@/styles/design-tokens';
 
+const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
+
 export default function HomePage() {
   const { user } = useUser();
 
@@ -82,7 +84,7 @@ function CoinBalance() {
     <div className="flex items-center justify-center gap-2.5 py-2">
       <Image src="/assets/coin.png" alt="coin" width={32} height={32} />
       <span className="text-2xl font-bold tabular-nums" style={{ color: colors.textPrimary }}>
-        {score.toLocaleString()}
+        {fmt(score)}
       </span>
     </div>
   );
@@ -129,7 +131,7 @@ function EnergyBar() {
         <div className="flex items-center justify-between">
           <span className="text-[9px] font-semibold uppercase" style={{ color: colors.textMuted }}>Energy</span>
           <span className="text-[10px] font-bold tabular-nums" style={{ color: colors.textSecondary }}>
-            {energy.toLocaleString()}/{maxEnergy.toLocaleString()}
+            {fmt(energy)}/{fmt(maxEnergy)}
           </span>
         </div>
         <div

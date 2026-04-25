@@ -6,6 +6,8 @@ import { useUser } from '@/contexts/UserContext';
 import { useAccount } from 'wagmi';
 import { colors, gradients } from '@/styles/design-tokens';
 
+const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
+
 export default function ProfilePage() {
   const { user } = useUser();
   const { address } = useAccount();
@@ -83,8 +85,8 @@ export default function ProfilePage() {
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 gap-2">
-        <StatBlock label="Best Score" value={user?.bestScore.toLocaleString() ?? '0'} icon="coin" />
-        <StatBlock label="Total Taps" value={user?.totalTaps.toLocaleString() ?? '0'} icon="tap" />
+        <StatBlock label="Best Score" value={user?.bestScore != null ? fmt(user.bestScore) : '0'} icon="coin" />
+        <StatBlock label="Total Taps" value={user?.totalTaps != null ? fmt(user.totalTaps) : '0'} icon="tap" />
         <StatBlock label="PvP Rank" value="--" icon="rank" />
         <StatBlock label="Win Rate" value="--" icon="trophy" />
       </div>
