@@ -4,6 +4,10 @@ A mobile-first tap-to-earn game built with Next.js 16, featuring real-time PvP b
 
 ---
 
+Our Contract Address
+
+```0x5144984bb6E57D50baD69CCBd17F78DDe7307304```
+
 ## Architecture Overview
 
 ```mermaid
