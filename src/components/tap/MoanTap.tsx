@@ -47,29 +47,18 @@ function FloatingScore({ point }: { point: FloatingPoint }) {
 }
 
 export default function MoanTap() {
-  const { moanState, asset, handleTap, hasEnergy } = useTapGame();
+  const { moanState, asset, handleTap, hasEnergy, botWarning, isBotPaused } = useTapGame();
   const [floatingPoints, setFloatingPoints] = useState<FloatingPoint[]>([]);
 
   const onTap = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>) => {
-      if (!hasEnergy) return;
+    (e: React.PointerEvent<HTMLButtonElement>) => {
+      if (!hasEnergy || isBotPaused) return;
 
-      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-      let clientX: number;
-      let clientY: number;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-      if ('touches' in e) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-      }
-
-      const x = clientX - rect.left;
-      const y = clientY - rect.top;
-
-      const points = handleTap();
+      const points = handleTap(x, y);
       if (points <= 0) return;
 
       const id = Date.now() + Math.random();
@@ -78,7 +67,7 @@ export default function MoanTap() {
         setFloatingPoints((prev) => prev.filter((p) => p.id !== id));
       }, 700);
     },
-    [handleTap, hasEnergy],
+    [handleTap, hasEnergy, isBotPaused],
   );
 
   return (
@@ -88,31 +77,52 @@ export default function MoanTap() {
         className="relative rounded-full touch-none focus:outline-none"
         style={{
           WebkitTapHighlightColor: 'transparent',
-          opacity: hasEnergy ? 1 : 0.4,
+          opacity: hasEnergy && !isBotPaused ? 1 : 0.4,
         }}
         animate={{
-          ...(moanState === 'epic' && hasEnergy ? PULSE_VARIANTS.epic : { scale: 1 }),
-          ...(hasEnergy ? GLOW_VARIANTS[moanState] : { boxShadow: 'none' }),
+          ...(moanState === 'epic' && hasEnergy && !isBotPaused ? PULSE_VARIANTS.epic : { scale: 1 }),
+          ...(hasEnergy && !isBotPaused ? GLOW_VARIANTS[moanState] : { boxShadow: 'none' }),
         }}
-        whileTap={hasEnergy ? { scale: 0.95 } : undefined}
+        whileTap={hasEnergy && !isBotPaused ? { scale: 0.95 } : undefined}
         transition={TAP_SPRING}
         onPointerDown={onTap}
-      >
-        <img
-          src={asset}
-          alt="MOAN character"
-          draggable={false}
-          className="h-48 w-48 rounded-full object-cover"
-        />
+        >
+          <img
+            src={asset}
+            alt="MOAN character"
+            draggable={false}
+            className="h-48 w-48 rounded-full object-cover"
+          />
 
-        <AnimatePresence>
-          {floatingPoints.map((point) => (
-            <FloatingScore key={point.id} point={point} />
-          ))}
-        </AnimatePresence>
-      </motion.button>
+          <AnimatePresence>
+            {floatingPoints.map((point) => (
+              <FloatingScore key={point.id} point={point} />
+            ))}
+          </AnimatePresence>
+        </motion.button>
 
-      {!hasEnergy && (
+      {/* Bot warning overlay */}
+      <AnimatePresence>
+        {botWarning && (
+          <motion.div
+            className="mt-3 rounded-xl px-4 py-2 text-center"
+            style={{ background: `${colors.primary}20`, border: `1px solid ${colors.primary}40` }}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.2 }}
+          >
+            <p className="text-xs font-bold" style={{ color: colors.primarySoft }}>
+              Bot behavior detected
+            </p>
+            <p className="text-[10px]" style={{ color: colors.textMuted }}>
+              {botWarning.reason}. Tapping paused.
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {!hasEnergy && !isBotPaused && (
         <motion.p
           className="mt-3 text-xs font-semibold"
           style={{ color: colors.textMuted }}
@@ -127,7 +137,7 @@ export default function MoanTap() {
       <div
         className="mt-[-8px] h-3 w-32 rounded-[50%]"
         style={{
-          background: `radial-gradient(ellipse, ${hasEnergy ? colors.glowPurpleSoft : 'transparent'}, transparent 70%)`,
+          background: `radial-gradient(ellipse, ${hasEnergy && !isBotPaused ? colors.glowPurpleSoft : 'transparent'}, transparent 70%)`,
           filter: 'blur(2px)',
         }}
       />

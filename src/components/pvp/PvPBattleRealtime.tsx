@@ -10,6 +10,8 @@ import { usePvPSocket, type PvPPhase } from '@/hooks/usePvPSocket';
 import { getMoanStateFromEnergy } from '@/lib/battleLogic';
 import { getMoanAsset, type MoanState } from '@/lib/tapLogic';
 import type { PlayerSlot } from '@/lib/wsProtocol';
+import { colors, gradients, shadows } from '@/styles/design-tokens';
+import { useUser } from '@/contexts/UserContext';
 import EnergyBar from './EnergyBar';
 import EnergyBeam from '@/components/fx/EnergyBeam';
 import ParticleBurst from '@/components/fx/ParticleBurst';
@@ -51,12 +53,12 @@ function FloatingScore({ point }: { point: FloatingPoint }) {
   const xOffset = (Math.random() - 0.5) * 20;
   return (
     <motion.span
-      className="pointer-events-none absolute whitespace-nowrap text-base font-bold text-yellow-300 drop-shadow-lg"
+      className="pointer-events-none absolute whitespace-nowrap text-base font-bold"
+      style={{ left: point.x - 10, top: point.y - 10, color: colors.gold }}
       initial={{ opacity: 1, y: 0, x: xOffset, scale: 0.8 }}
       animate={{ opacity: 0, y: -60, x: xOffset + 5, scale: 1.3 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.7, ease: 'easeOut' }}
-      style={{ left: point.x - 10, top: point.y - 10 }}
     >
       +{point.value}
     </motion.span>
@@ -77,7 +79,7 @@ function MoanAvatar({
 
   return (
     <div className="flex flex-col items-center gap-1">
-      <span className="text-[9px] font-semibold uppercase tracking-widest text-white/30">
+      <span className="text-[9px] font-semibold uppercase tracking-widest" style={{ color: colors.textMuted }}>
         {label}
       </span>
       <motion.div
@@ -127,11 +129,12 @@ export default function PvPBattleRealtime() {
   } = usePvPSocket();
 
   const feedback = useGameFeedback();
+  const { user } = useUser();
   const [floatingPoints, setFloatingPoints] = useState<FloatingPoint[]>([]);
 
   const handleStartPvP = useCallback(() => {
     const playerId = `player_${Date.now()}`;
-    const playerName = 'You';
+    const playerName = user?.username ?? 'Player';
     connect(playerId, playerName);
   }, [connect]);
 
@@ -162,19 +165,42 @@ export default function PvPBattleRealtime() {
   // ── Phase: idle → entry screen ──
   if (phase === 'idle') {
     return (
-      <div className="flex flex-col items-center gap-6 py-12">
-        <motion.h2
-          className="text-2xl font-black text-white"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          REAL PvP
-        </motion.h2>
-        <p className="text-xs text-white/40">Battle a real player online</p>
+      <div className="flex flex-1 flex-col items-center justify-center gap-6 py-12">
+        <div className="relative flex items-center justify-center">
+          <img
+            src="/assets/bg.jpg"
+            alt=""
+            draggable={false}
+            className="absolute h-52 w-52 rounded-full object-cover opacity-10 blur-sm"
+          />
+          <Image
+            src="/assets/moan/epic.png"
+            alt=""
+            width={120}
+            height={120}
+            className="relative z-10 h-28 w-28 rounded-full object-cover"
+            draggable={false}
+          />
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <motion.h2
+            className="text-2xl font-black"
+            style={{ color: colors.textPrimary }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            REAL PvP
+          </motion.h2>
+          <p className="text-sm font-semibold" style={{ color: colors.primarySoft }}>
+            {user?.username ?? 'Player'}
+          </p>
+          <p className="text-xs" style={{ color: colors.textMuted }}>Battle a real player online</p>
+        </div>
         <motion.button
           type="button"
           onClick={handleStartPvP}
-          className="rounded-2xl bg-purple-600 px-10 py-3.5 text-lg font-bold text-white shadow-lg shadow-purple-600/30 transition-colors hover:bg-purple-500 active:scale-95"
+          className="rounded-2xl px-10 py-3.5 text-lg font-bold text-white transition-transform active:scale-95"
+          style={{ background: gradients.primary, boxShadow: shadows.glow }}
           whileTap={{ scale: 0.95 }}
         >
           FIND MATCH
@@ -195,16 +221,17 @@ export default function PvPBattleRealtime() {
   // ── Phase: matched (brief flash) ──
   if (phase === 'matched') {
     return (
-      <div className="flex flex-col items-center gap-4 py-12">
+      <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <motion.div
-          className="text-lg font-bold text-purple-300"
+          className="text-lg font-bold"
+          style={{ color: colors.primarySoft }}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
         >
           OPPONENT FOUND
         </motion.div>
         {opponent && (
-          <span className="text-sm text-white/60">{opponent.name}</span>
+          <span className="text-sm" style={{ color: colors.textMuted }}>{opponent.name}</span>
         )}
       </div>
     );
@@ -213,10 +240,10 @@ export default function PvPBattleRealtime() {
   // ── Phase: countdown ──
   if (phase === 'countdown' && countdownValue !== null) {
     return (
-      <div className="flex flex-col items-center gap-4 py-6">
+      <div className="flex flex-1 flex-col items-center justify-center gap-4">
         {opponent && (
           <div className="flex items-center gap-3">
-            <span className="text-sm text-white/60">vs {opponent.name}</span>
+            <span className="text-sm" style={{ color: colors.textMuted }}>vs {opponent.name}</span>
           </div>
         )}
         <PvPCountdown count={countdownValue} />
@@ -228,12 +255,13 @@ export default function PvPBattleRealtime() {
   if (phase === 'ended' && state) {
     const isWin = state.winner === slot;
     const label = isWin ? 'YOU WIN' : state.winner === null ? 'DRAW' : 'YOU LOSE';
-    const color = isWin ? 'text-purple-400' : 'text-blue-400';
+    const color = isWin ? colors.gold : colors.secondary;
 
     return (
-      <div className="flex flex-col items-center gap-6 py-12">
+      <div className="flex flex-1 flex-col items-center justify-center gap-6 py-12">
         <motion.span
-          className={`text-4xl font-black ${color}`}
+          className="text-4xl font-black"
+          style={{ color }}
           initial={{ scale: 0.3, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -241,7 +269,7 @@ export default function PvPBattleRealtime() {
           {label}
         </motion.span>
 
-        <div className="flex gap-6 text-sm text-white/50">
+        <div className="flex gap-6 text-sm" style={{ color: colors.textMuted }}>
           <span>Your energy: {slot === 'A' ? state.energyA : state.energyB}</span>
           <span>Their energy: {slot === 'A' ? state.energyB : state.energyA}</span>
         </div>
@@ -251,7 +279,12 @@ export default function PvPBattleRealtime() {
         <button
           type="button"
           onClick={leave}
-          className="rounded-xl bg-white/10 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/20 active:scale-95"
+          className="rounded-xl px-6 py-2.5 text-sm font-semibold transition-transform active:scale-95"
+          style={{
+            background: `${colors.primary}20`,
+            color: colors.primarySoft,
+            border: `1px solid ${colors.primary}40`,
+          }}
         >
           Back
         </button>
@@ -283,8 +316,9 @@ export default function PvPBattleRealtime() {
         {/* Timer */}
         <div className="text-center">
           <motion.span
-            className="text-2xl font-black tabular-nums text-white"
-            animate={state.timeRemaining <= 10 ? { color: ['#ffffff', '#ef4444', '#ffffff'] } : {}}
+            className="text-2xl font-black tabular-nums"
+            style={{ color: colors.textPrimary }}
+            animate={state.timeRemaining <= 10 ? { color: [colors.textPrimary, '#ef4444', colors.textPrimary] } : {}}
             transition={state.timeRemaining <= 10 ? { repeat: Infinity, duration: 0.8 } : {}}
           >
             {String(Math.floor(state.timeRemaining / 60)).padStart(2, '0')}:
@@ -300,14 +334,27 @@ export default function PvPBattleRealtime() {
             label={opponent?.name ?? 'OPPONENT'}
           />
           <PowerMeter energy={oppEnergy} maxEnergy={MAX_ENERGY_DISPLAY} player={slot === 'A' ? 'B' : 'A'} />
-          <span className="text-[10px] tabular-nums text-white/30">{oppTaps} taps</span>
+          <span className="text-[10px] tabular-nums" style={{ color: colors.textMuted }}>{oppTaps} taps</span>
         </div>
 
         {/* Beam + Bar */}
         <div className="relative flex flex-col items-center gap-1">
-          <EnergyBeam intensity={signals.intensity} dominance={signals.dominance} />
-          <ParticleBurst intensity={signals.intensity} momentum={signals.momentum} dominance={signals.dominance} side="A" />
-          <ParticleBurst intensity={signals.intensity} momentum={signals.momentum} dominance={signals.dominance} side="B" />
+          <div className="w-full px-2">
+            <EnergyBar position={barPos} winner={state.winner === slot ? 'A' : state.winner ? 'B' : null} />
+          </div>
+        </div>
+
+        {/* Player tap zone */}
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-[9px] font-semibold uppercase tracking-widest" style={{ color: colors.primarySoft }}>
+            {user?.username ?? 'YOU'}
+          </span>
+          <PowerMeter energy={oppEnergy} maxEnergy={MAX_ENERGY_DISPLAY} player={slot === 'A' ? 'B' : 'A'} />
+          <span className="text-[10px] tabular-nums" style={{ color: colors.textMuted }}>{oppTaps} taps</span>
+        </div>
+
+        {/* Beam + Bar */}
+        <div className="relative flex flex-col items-center gap-1">
           <div className="w-full px-2">
             <EnergyBar position={barPos} winner={state.winner === slot ? 'A' : state.winner ? 'B' : null} />
           </div>
@@ -318,7 +365,7 @@ export default function PvPBattleRealtime() {
           <div className="relative">
             <motion.button
               type="button"
-              className="relative rounded-full touch-none focus:outline-none"
+              className="relative z-10 rounded-full touch-none focus:outline-none"
               style={{ WebkitTapHighlightColor: 'transparent' }}
               animate={{
                 ...(myState === 'epic' ? EPIC_PULSE : { scale: 1 }),
@@ -344,7 +391,7 @@ export default function PvPBattleRealtime() {
             </motion.button>
           </div>
           <PowerMeter energy={myEnergy} maxEnergy={MAX_ENERGY_DISPLAY} player={slot} />
-          <span className="text-[10px] tabular-nums text-white/30">{myTaps} taps</span>
+          <span className="text-[10px] tabular-nums" style={{ color: colors.textMuted }}>{myTaps} taps</span>
         </div>
       </div>
     </ScreenShake>
