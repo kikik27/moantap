@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
 import { useUserStore } from '@/stores/userStore';
+import { useCallback, useRef, useState } from 'react';
 import { useGameFeedback } from '@/hooks/useGameFeedback';
 import { useTapGame } from '@/hooks/useTapGame';
 import { usePvPSocket, type PvPPhase } from '@/hooks/usePvPSocket';
@@ -138,9 +139,8 @@ export default function PvPBattleRealtime() {
   const rewardGivenRef = useRef(false);
 
   const handleStartPvP = useCallback(() => {
-    // Use wallet address as playerId so the server knows who each player is
-    const playerId = currentUserWallet ?? `player_${Date.now()}`;
-    const playerName = 'You';
+    const playerId = `player_${Date.now()}`;
+    const playerName = user?.username ?? 'Player';
     connect(playerId, playerName);
   }, [connect, currentUserWallet]);
 

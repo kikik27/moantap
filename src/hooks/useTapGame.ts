@@ -36,6 +36,7 @@ export function useTapGame() {
   const asset = getMoanAsset(moanState)
   const staleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const regenTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const botDetection = useMemo(() => createBotDetector(), [])
 
   // Session tracking refs (reset each time score resets)
   const tapsRef = useRef(0)
