@@ -80,16 +80,7 @@ function CoinBalance() {
 
   return (
     <div className="flex items-center justify-center gap-2.5 py-2">
-      <div
-        className="flex h-7 w-7 items-center justify-center rounded-full"
-        style={{ background: gradients.goldShine }}
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 6v12" />
-          <path d="M15 9.5c0-1.38-1.12-2.5-3-2.5H10v5h2c1.88 0 3-1.12 3-2.5Z" />
-        </svg>
-      </div>
+      <Image src="/assets/coin.png" alt="coin" width={32} height={32} />
       <span className="text-2xl font-bold tabular-nums" style={{ color: colors.textPrimary }}>
         {score.toLocaleString()}
       </span>
