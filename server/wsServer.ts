@@ -5,7 +5,7 @@ import { enqueue, dequeue, tryMatch } from './matchmaking';
 import { createAndStartRoom, handleTap, removePlayer } from './roomManager';
 import type { ClientMessage, PlayerSlot } from '../src/lib/wsProtocol';
 
-const WS_PORT = 3001;
+const WS_PORT = parseInt(process.env.PORT ?? '3001', 10);
 const MATCH_POLL_MS = 200;
 
 const wss = new WebSocketServer({ port: WS_PORT });

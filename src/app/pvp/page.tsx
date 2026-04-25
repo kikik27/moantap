@@ -1,6 +1,7 @@
 'use client';
 
 import PvPBattleRealtime from '@/components/pvp/PvPBattleRealtime';
+import AppHeader from '@/components/layout/AppHeader';
 import BottomNav from '@/components/layout/BottomNav';
 import WalletGate from '@/components/layout/WalletGate';
 import { colors, gradients, layout, spacing } from '@/styles/design-tokens';
@@ -39,10 +40,10 @@ export default function PvPPage() {
           style={{
             paddingLeft: spacing.base,
             paddingRight: spacing.base,
-            paddingTop: spacing.md,
             paddingBottom: 76 + spacing.base,
           }}
         >
+          <AppHeader />
           <PvPBattleRealtime />
         </main>
       </div>

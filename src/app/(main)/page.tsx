@@ -5,53 +5,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import MoanTap from '@/components/tap/MoanTap';
-import { useUser } from '@/contexts/UserContext';
+import AppHeader from '@/components/layout/AppHeader';
 import { useTapGame } from '@/hooks/useTapGame';
 import { colors, gradients, shadows, spacing } from '@/styles/design-tokens';
 
 const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
 
 export default function HomePage() {
-  const { user } = useUser();
-
   return (
     <div className="flex flex-1 flex-col">
       {/* Top bar */}
-      <header
-        className="flex items-center justify-between"
-        style={{ paddingTop: spacing.md, paddingBottom: spacing.sm }}
-      >
-        <div className="flex items-center gap-2">
-          <Image
-            src="/assets/logo-moantap.png"
-            alt=""
-            width={24}
-            height={24}
-            className="h-6 w-6 object-contain"
-            priority
-          />
-          <span className="text-xs font-bold tracking-tight" style={{ color: colors.textSecondary }}>
-            MOANTAP
-          </span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div
-            className="h-6 w-6 overflow-hidden rounded-full"
-            style={{ background: gradients.primary }}
-          >
-            <Image
-              src="/assets/moan/idle.png"
-              alt=""
-              width={24}
-              height={24}
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <span className="text-[10px] font-medium max-w-[80px] truncate" style={{ color: colors.textMuted }}>
-            {user?.username}
-          </span>
-        </div>
-      </header>
+      <AppHeader />
 
       {/* Coin balance */}
       <CoinBalance />

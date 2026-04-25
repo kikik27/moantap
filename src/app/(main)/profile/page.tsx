@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import AppHeader from '@/components/layout/AppHeader';
 import { useUser } from '@/contexts/UserContext';
 import { useAccount } from 'wagmi';
 import { colors, gradients } from '@/styles/design-tokens';
@@ -22,7 +23,8 @@ export default function ProfilePage() {
   const xpMax = 500;
 
   return (
-    <div className="flex flex-1 flex-col gap-4 py-6">
+    <div className="flex flex-1 flex-col gap-4 py-2">
+      <AppHeader />
       {/* Profile card */}
       <motion.div
         className="flex flex-col items-center gap-3 rounded-2xl py-6"

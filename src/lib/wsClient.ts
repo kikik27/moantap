@@ -6,7 +6,7 @@ import type {
 } from './wsProtocol';
 
 const WS_URL = typeof window !== 'undefined'
-  ? `ws://${window.location.hostname}:3001`
+  ? (process.env.NEXT_PUBLIC_WS_URL ?? `ws://${window.location.hostname}:3001`)
   : 'ws://localhost:3001';
 const RECONNECT_DELAY_MS = 2000;
 const MAX_RECONNECT_ATTEMPTS = 5;

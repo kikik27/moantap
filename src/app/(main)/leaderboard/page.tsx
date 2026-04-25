@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import AppHeader from '@/components/layout/AppHeader';
 import { useUser } from '@/contexts/UserContext';
 import { colors } from '@/styles/design-tokens';
 
@@ -33,8 +34,9 @@ export default function LeaderboardPage() {
   const { user } = useUser();
 
   return (
-    <div className="flex flex-1 flex-col gap-4 py-6">
+    <div className="flex flex-1 flex-col gap-4 py-2">
       {/* Header */}
+      <AppHeader />
       <div className="flex items-center justify-between">
         <h1 className="text-base font-bold" style={{ color: colors.textPrimary }}>Rank PvP</h1>
         <span className="text-[10px] font-medium tracking-widest uppercase" style={{ color: colors.textMuted }}>
