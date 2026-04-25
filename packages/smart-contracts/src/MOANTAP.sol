@@ -16,12 +16,14 @@ contract MOANTAP is Ownable {
 
     // ── Events ───────────────────────────────────────────────────────────────
 
-    event TapRecorded(address indexed player, uint256 amount, uint256 total);
+    event TapRecorded(address indexed player, uint256 amount, uint256 total, string username);
     event PvPResultRecorded(
         address indexed winner,
         address indexed loser,
         uint256 winnerTotal,
-        uint256 loserTotal
+        uint256 loserTotal,
+        string winnerUsername,
+        string loserUsername
     );
     event OperatorSet(address indexed operator, bool enabled);
 
@@ -54,14 +56,19 @@ contract MOANTAP is Ownable {
     // ── Game actions ─────────────────────────────────────────────────────────
 
     /// @notice Record tap score for a player (called by backend operator)
-    function recordTap(address player, uint256 amount) external onlyOperator {
+    function recordTap(address player, uint256 amount, string calldata username) external onlyOperator {
         if (player == address(0)) revert ZeroAddress();
         totalPoints[player] += amount;
-        emit TapRecorded(player, amount, totalPoints[player]);
+        emit TapRecorded(player, amount, totalPoints[player], username);
     }
 
     /// @notice Record PvP match result — winner +500, loser +200 consolation
-    function recordPvPResult(address winner, address loser) external onlyOperator {
+    function recordPvPResult(
+        address winner,
+        address loser,
+        string calldata winnerUsername,
+        string calldata loserUsername
+    ) external onlyOperator {
         if (winner == address(0) || loser == address(0)) revert ZeroAddress();
         if (winner == loser) revert SamePlayer();
 
@@ -71,7 +78,7 @@ contract MOANTAP is Ownable {
         totalPoints[loser] += 200;
         pvpLosses[loser] += 1;
 
-        emit PvPResultRecorded(winner, loser, totalPoints[winner], totalPoints[loser]);
+        emit PvPResultRecorded(winner, loser, totalPoints[winner], totalPoints[loser], winnerUsername, loserUsername);
     }
 
     // ── Views ────────────────────────────────────────────────────────────────

@@ -4,7 +4,8 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useUserStore } from '@/stores/userStore';
 import { useGameFeedback } from '@/hooks/useGameFeedback';
 import { useTapGame } from '@/hooks/useTapGame';
 import { usePvPSocket, type PvPPhase } from '@/hooks/usePvPSocket';
@@ -117,6 +118,7 @@ function computeSimpleSignals(energyA: number, energyB: number) {
 }
 
 export default function PvPBattleRealtime() {
+  const currentUserWallet = useUserStore((s) => s.currentUserWallet);
   const {
     phase,
     slot,
@@ -136,10 +138,11 @@ export default function PvPBattleRealtime() {
   const rewardGivenRef = useRef(false);
 
   const handleStartPvP = useCallback(() => {
-    const playerId = `player_${Date.now()}`;
-    const playerName = user?.username ?? 'Player';
+    // Use wallet address as playerId so the server knows who each player is
+    const playerId = currentUserWallet ?? `player_${Date.now()}`;
+    const playerName = 'You';
     connect(playerId, playerName);
-  }, [connect]);
+  }, [connect, currentUserWallet]);
 
   const handleCancelQueue = useCallback(() => {
     leave();

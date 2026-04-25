@@ -123,6 +123,16 @@
                     "name": "loser",
                     "type": "address",
                     "internalType": "address"
+                },
+                {
+                    "name": "winnerUsername",
+                    "type": "string",
+                    "internalType": "string"
+                },
+                {
+                    "name": "loserUsername",
+                    "type": "string",
+                    "internalType": "string"
                 }
             ],
             "outputs": [],
@@ -141,6 +151,11 @@
                     "name": "amount",
                     "type": "uint256",
                     "internalType": "uint256"
+                },
+                {
+                    "name": "username",
+                    "type": "string",
+                    "internalType": "string"
                 }
             ],
             "outputs": [],
@@ -268,6 +283,18 @@
                     "type": "uint256",
                     "indexed": false,
                     "internalType": "uint256"
+                },
+                {
+                    "name": "winnerUsername",
+                    "type": "string",
+                    "indexed": false,
+                    "internalType": "string"
+                },
+                {
+                    "name": "loserUsername",
+                    "type": "string",
+                    "indexed": false,
+                    "internalType": "string"
                 }
             ],
             "anonymous": false
@@ -293,6 +320,12 @@
                     "type": "uint256",
                     "indexed": false,
                     "internalType": "uint256"
+                },
+                {
+                    "name": "username",
+                    "type": "string",
+                    "indexed": false,
+                    "internalType": "string"
                 }
             ],
             "anonymous": false
@@ -334,450 +367,5 @@
             "name": "ZeroAddress",
             "inputs": []
         }
-    ],
-    "bytecode": {
-        "object": "0x608060405234801561000f575f80fd5b5060405161081b38038061081b83398101604081905261002e916100bb565b806001600160a01b03811661005c57604051631e4fbdf760e01b81525f600482015260240160405180910390fd5b6100658161006c565b50506100e8565b5f80546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b5f602082840312156100cb575f80fd5b81516001600160a01b03811681146100e1575f80fd5b9392505050565b610726806100f55f395ff3fe608060405234801561000f575f80fd5b50600436106100a6575f3560e01c8063715018a61161006e578063715018a614610190578063831cfafa146101985780638da5cb5b146101b7578063c7445d91146101d1578063efe0a48e146101e4578063f2fde38b14610203575f80fd5b80630fac9100146100aa57806313e7c9d8146100dc5780634fd66eae1461010e578063558a72971461016857806363f589811461017d575b5f80fd5b6100c96100b8366004610619565b60016020525f908152604090205481565b6040519081526020015b60405180910390f35b6100fe6100ea366004610619565b60046020525f908152604090205460ff1681565b60405190151581526020016100d3565b61014d61011c366004610619565b6001600160a01b03165f90815260016020908152604080832054600283528184205460039093529220549192909190565b604080519384526020840192909252908201526060016100d3565b61017b610176366004610639565b610216565b005b61017b61018b366004610672565b6102a4565b61017b610373565b6100c96101a6366004610619565b60036020525f908152604090205481565b5f546040516001600160a01b0390911681526020016100d3565b61017b6101df36600461069a565b610386565b6100c96101f2366004610619565b60026020525f908152604090205481565b61017b610211366004610619565b610541565b61021e610583565b6001600160a01b0382166102455760405163d92e233d60e01b815260040160405180910390fd5b6001600160a01b0382165f81815260046020908152604091829020805460ff191685151590811790915591519182527f1a594081ae893ab78e67d9b9e843547318164322d32c65369d78a96172d9dc8f91015b60405180910390a25050565b335f9081526004602052604090205460ff166102d357604051631f0853c160e21b815260040160405180910390fd5b6001600160a01b0382166102fa5760405163d92e233d60e01b815260040160405180910390fd5b6001600160a01b0382165f90815260016020526040812080548392906103219084906106cb565b90915550506001600160a01b0382165f81815260016020908152604091829020548251858152918201527f42e30bf01bcc44db64cdffe2c5e3e72a6e78150f06cdc0f25a44795e8d21cc3e9101610298565b61037b610583565b6103845f6105af565b565b335f9081526004602052604090205460ff166103b557604051631f0853c160e21b815260040160405180910390fd5b6001600160a01b03821615806103d257506001600160a01b038116155b156103f05760405163d92e233d60e01b815260040160405180910390fd5b806001600160a01b0316826001600160a01b03160361042257604051631062841d60e31b815260040160405180910390fd5b6001600160a01b0382165f90815260016020526040812080546101f4929061044b9084906106cb565b90915550506001600160a01b0382165f9081526002602052604081208054600192906104789084906106cb565b90915550506001600160a01b0381165f908152600160205260408120805460c892906104a59084906106cb565b90915550506001600160a01b0381165f9081526003602052604081208054600192906104d29084906106cb565b90915550506001600160a01b038281165f81815260016020526040808220549385168083529181902054905191937feebeafeafd370273f1b0ebb1dc7f0d5c74e5ff824e237e6f9dcf33c278af28e4926105359290918252602082015260400190565b60405180910390a35050565b610549610583565b6001600160a01b03811661057757604051631e4fbdf760e01b81525f60048201526024015b60405180910390fd5b610580816105af565b50565b5f546001600160a01b031633146103845760405163118cdaa760e01b815233600482015260240161056e565b5f80546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b80356001600160a01b0381168114610614575f80fd5b919050565b5f60208284031215610629575f80fd5b610632826105fe565b9392505050565b5f806040838503121561064a575f80fd5b610653836105fe565b915060208301358015158114610667575f80fd5b809150509250929050565b5f8060408385031215610683575f80fd5b61068c836105fe565b946020939093013593505050565b5f80604083850312156106ab575f80fd5b6106b4836105fe565b91506106c2602084016105fe565b90509250929050565b808201808211156106ea57634e487b7160e01b5f52601160045260245ffd5b9291505056fea2646970667358221220e1930043fe1f0f0eb115a0c9595d5dedafe671a487d2ec56011275c3df34e5cb64736f6c63430008180033",
-        "sourceMap": "198:3859:42:-:0;;;2024:58;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;2066:12;-1:-1:-1;;;;;1273:26:20;;1269:95;;1322:31;;-1:-1:-1;;;1322:31:20;;1350:1;1322:31;;;455:51:45;428:18;;1322:31:20;;;;;;;1269:95;1373:32;1392:12;1373:18;:32::i;:::-;1225:187;2024:58:42;198:3859;;2912:187:20;2985:16;3004:6;;-1:-1:-1;;;;;3020:17:20;;;-1:-1:-1;;;;;;3020:17:20;;;;;;3052:40;;3004:6;;;;;;;3052:40;;2985:16;3052:40;2975:124;2912:187;:::o;14:290:45:-;84:6;137:2;125:9;116:7;112:23;108:32;105:52;;;153:1;150;143:12;105:52;179:16;;-1:-1:-1;;;;;224:31:45;;214:42;;204:70;;270:1;267;260:12;204:70;293:5;14:290;-1:-1:-1;;;14:290:45:o;309:203::-;198:3859:42;;;;;;",
-        "linkReferences": {}
-    },
-    "deployedBytecode": {
-        "object": "0x608060405234801561000f575f80fd5b50600436106100a6575f3560e01c8063715018a61161006e578063715018a614610190578063831cfafa146101985780638da5cb5b146101b7578063c7445d91146101d1578063efe0a48e146101e4578063f2fde38b14610203575f80fd5b80630fac9100146100aa57806313e7c9d8146100dc5780634fd66eae1461010e578063558a72971461016857806363f589811461017d575b5f80fd5b6100c96100b8366004610619565b60016020525f908152604090205481565b6040519081526020015b60405180910390f35b6100fe6100ea366004610619565b60046020525f908152604090205460ff1681565b60405190151581526020016100d3565b61014d61011c366004610619565b6001600160a01b03165f90815260016020908152604080832054600283528184205460039093529220549192909190565b604080519384526020840192909252908201526060016100d3565b61017b610176366004610639565b610216565b005b61017b61018b366004610672565b6102a4565b61017b610373565b6100c96101a6366004610619565b60036020525f908152604090205481565b5f546040516001600160a01b0390911681526020016100d3565b61017b6101df36600461069a565b610386565b6100c96101f2366004610619565b60026020525f908152604090205481565b61017b610211366004610619565b610541565b61021e610583565b6001600160a01b0382166102455760405163d92e233d60e01b815260040160405180910390fd5b6001600160a01b0382165f81815260046020908152604091829020805460ff191685151590811790915591519182527f1a594081ae893ab78e67d9b9e843547318164322d32c65369d78a96172d9dc8f91015b60405180910390a25050565b335f9081526004602052604090205460ff166102d357604051631f0853c160e21b815260040160405180910390fd5b6001600160a01b0382166102fa5760405163d92e233d60e01b815260040160405180910390fd5b6001600160a01b0382165f90815260016020526040812080548392906103219084906106cb565b90915550506001600160a01b0382165f81815260016020908152604091829020548251858152918201527f42e30bf01bcc44db64cdffe2c5e3e72a6e78150f06cdc0f25a44795e8d21cc3e9101610298565b61037b610583565b6103845f6105af565b565b335f9081526004602052604090205460ff166103b557604051631f0853c160e21b815260040160405180910390fd5b6001600160a01b03821615806103d257506001600160a01b038116155b156103f05760405163d92e233d60e01b815260040160405180910390fd5b806001600160a01b0316826001600160a01b03160361042257604051631062841d60e31b815260040160405180910390fd5b6001600160a01b0382165f90815260016020526040812080546101f4929061044b9084906106cb565b90915550506001600160a01b0382165f9081526002602052604081208054600192906104789084906106cb565b90915550506001600160a01b0381165f908152600160205260408120805460c892906104a59084906106cb565b90915550506001600160a01b0381165f9081526003602052604081208054600192906104d29084906106cb565b90915550506001600160a01b038281165f81815260016020526040808220549385168083529181902054905191937feebeafeafd370273f1b0ebb1dc7f0d5c74e5ff824e237e6f9dcf33c278af28e4926105359290918252602082015260400190565b60405180910390a35050565b610549610583565b6001600160a01b03811661057757604051631e4fbdf760e01b81525f60048201526024015b60405180910390fd5b610580816105af565b50565b5f546001600160a01b031633146103845760405163118cdaa760e01b815233600482015260240161056e565b5f80546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b80356001600160a01b0381168114610614575f80fd5b919050565b5f60208284031215610629575f80fd5b610632826105fe565b9392505050565b5f806040838503121561064a575f80fd5b610653836105fe565b915060208301358015158114610667575f80fd5b809150509250929050565b5f8060408385031215610683575f80fd5b61068c836105fe565b946020939093013593505050565b5f80604083850312156106ab575f80fd5b6106b4836105fe565b91506106c2602084016105fe565b90509250929050565b808201808211156106ea57634e487b7160e01b5f52601160045260245ffd5b9291505056fea2646970667358221220e1930043fe1f0f0eb115a0c9595d5dedafe671a487d2ec56011275c3df34e5cb64736f6c63430008180033",
-        "sourceMap": "198:3859:42:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;442:46;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;529:25:45;;;517:2;502:18;442:46:42;;;;;;;;666:41;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;730:14:45;;723:22;705:41;;693:2;678:18;666:41:42;565:187:45;3837:218:42;;;;;;:::i;:::-;-1:-1:-1;;;;;3992:19:42;3924:14;3992:19;;;:11;:19;;;;;;;;;4013:7;:15;;;;;;4030:9;:17;;;;;;3992:19;;4013:15;;4030:17;3837:218;;;;;959:25:45;;;1015:2;1000:18;;993:34;;;;1043:18;;;1036:34;947:2;932:18;3837:218:42;757:319:45;2354:221:42;;;;;;:::i;:::-;;:::i;:::-;;2856:238;;;;;;:::i;:::-;;:::i;2293:101:20:-;;;:::i;542:44:42:-;;;;;;:::i;:::-;;;;;;;;;;;;;;1638:85:20;1684:7;1710:6;1638:85;;-1:-1:-1;;;;;1710:6:20;;;1838:51:45;;1826:2;1811:18;1638:85:20;1692:203:45;3180:437:42;;;;;;:::i;:::-;;:::i;494:42::-;;;;;;:::i;:::-;;;;;;;;;;;;;;2543:215:20;;;;;;:::i;:::-;;:::i;2354:221:42:-;1531:13:20;:11;:13::i;:::-;-1:-1:-1;;;;;2440:22:42;::::1;2436:48;;2471:13;;-1:-1:-1::0;;;2471:13:42::1;;;;;;;;;;;2436:48;-1:-1:-1::0;;;;;2494:19:42;::::1;;::::0;;;:9:::1;:19;::::0;;;;;;;;:29;;-1:-1:-1;;2494:29:42::1;::::0;::::1;;::::0;;::::1;::::0;;;2538:30;;705:41:45;;;2538:30:42::1;::::0;678:18:45;2538:30:42::1;;;;;;;;2354:221:::0;;:::o;2856:238::-;1765:10;1755:21;;;;:9;:21;;;;;;;;1750:48;;1785:13;;-1:-1:-1;;;1785:13:42;;;;;;;;;;;1750:48;-1:-1:-1;;;;;2943:20:42;::::1;2939:46;;2972:13;;-1:-1:-1::0;;;2972:13:42::1;;;;;;;;;;;2939:46;-1:-1:-1::0;;;;;2995:19:42;::::1;;::::0;;;:11:::1;:19;::::0;;;;:29;;3018:6;;2995:19;:29:::1;::::0;3018:6;;2995:29:::1;:::i;:::-;::::0;;;-1:-1:-1;;;;;;;3039:48:42;::::1;3067:19;::::0;;;:11:::1;:19;::::0;;;;;;;;;3039:48;;2566:25:45;;;2607:18;;;2600:34;3039:48:42::1;::::0;2539:18:45;3039:48:42::1;2392:248:45::0;2293:101:20;1531:13;:11;:13::i;:::-;2357:30:::1;2384:1;2357:18;:30::i;:::-;2293:101::o:0;3180:437:42:-;1765:10;1755:21;;;;:9;:21;;;;;;;;1750:48;;1785:13;;-1:-1:-1;;;1785:13:42;;;;;;;;;;;1750:48;-1:-1:-1;;;;;3272:20:42;::::1;::::0;;:43:::1;;-1:-1:-1::0;;;;;;3296:19:42;::::1;::::0;3272:43:::1;3268:69;;;3324:13;;-1:-1:-1::0;;;3324:13:42::1;;;;;;;;;;;3268:69;3361:5;-1:-1:-1::0;;;;;3351:15:42::1;:6;-1:-1:-1::0;;;;;3351:15:42::1;::::0;3347:40:::1;;3375:12;;-1:-1:-1::0;;;3375:12:42::1;;;;;;;;;;;3347:40;-1:-1:-1::0;;;;;3398:19:42;::::1;;::::0;;;:11:::1;:19;::::0;;;;:26;;3421:3:::1;::::0;3398:19;:26:::1;::::0;3421:3;;3398:26:::1;:::i;:::-;::::0;;;-1:-1:-1;;;;;;;3434:15:42;::::1;;::::0;;;:7:::1;:15;::::0;;;;:20;;3453:1:::1;::::0;3434:15;:20:::1;::::0;3453:1;;3434:20:::1;:::i;:::-;::::0;;;-1:-1:-1;;;;;;;3465:18:42;::::1;;::::0;;;:11:::1;:18;::::0;;;;:25;;3487:3:::1;::::0;3465:18;:25:::1;::::0;3487:3;;3465:25:::1;:::i;:::-;::::0;;;-1:-1:-1;;;;;;;3500:16:42;::::1;;::::0;;;:9:::1;:16;::::0;;;;:21;;3520:1:::1;::::0;3500:16;:21:::1;::::0;3520:1;;3500:21:::1;:::i;:::-;::::0;;;-1:-1:-1;;;;;;;3537:73:42;;::::1;3570:19;::::0;;;:11:::1;:19;::::0;;;;;;3537:73;;::::1;3591:18:::0;;;;;;;;3537:73;;;;::::1;::::0;::::1;::::0;3591:18;2566:25:45;;;2622:2;2607:18;;2600:34;2554:2;2539:18;;2392:248;3537:73:42::1;;;;;;;;3180:437:::0;;:::o;2543:215:20:-;1531:13;:11;:13::i;:::-;-1:-1:-1;;;;;2627:22:20;::::1;2623:91;;2672:31;::::0;-1:-1:-1;;;2672:31:20;;2700:1:::1;2672:31;::::0;::::1;1838:51:45::0;1811:18;;2672:31:20::1;;;;;;;;2623:91;2723:28;2742:8;2723:18;:28::i;:::-;2543:215:::0;:::o;1796:162::-;1684:7;1710:6;-1:-1:-1;;;;;1710:6:20;735:10:32;1855:23:20;1851:101;;1901:40;;-1:-1:-1;;;1901:40:20;;735:10:32;1901:40:20;;;1838:51:45;1811:18;;1901:40:20;1692:203:45;2912:187:20;2985:16;3004:6;;-1:-1:-1;;;;;3020:17:20;;;-1:-1:-1;;;;;;3020:17:20;;;;;;3052:40;;3004:6;;;;;;;3052:40;;2985:16;3052:40;2975:124;2912:187;:::o;14:173:45:-;82:20;;-1:-1:-1;;;;;131:31:45;;121:42;;111:70;;177:1;174;167:12;111:70;14:173;;;:::o;192:186::-;251:6;304:2;292:9;283:7;279:23;275:32;272:52;;;320:1;317;310:12;272:52;343:29;362:9;343:29;:::i;:::-;333:39;192:186;-1:-1:-1;;;192:186:45:o;1081:347::-;1146:6;1154;1207:2;1195:9;1186:7;1182:23;1178:32;1175:52;;;1223:1;1220;1213:12;1175:52;1246:29;1265:9;1246:29;:::i;:::-;1236:39;;1325:2;1314:9;1310:18;1297:32;1372:5;1365:13;1358:21;1351:5;1348:32;1338:60;;1394:1;1391;1384:12;1338:60;1417:5;1407:15;;;1081:347;;;;;:::o;1433:254::-;1501:6;1509;1562:2;1550:9;1541:7;1537:23;1533:32;1530:52;;;1578:1;1575;1568:12;1530:52;1601:29;1620:9;1601:29;:::i;:::-;1591:39;1677:2;1662:18;;;;1649:32;;-1:-1:-1;;;1433:254:45:o;1900:260::-;1968:6;1976;2029:2;2017:9;2008:7;2004:23;2000:32;1997:52;;;2045:1;2042;2035:12;1997:52;2068:29;2087:9;2068:29;:::i;:::-;2058:39;;2116:38;2150:2;2139:9;2135:18;2116:38;:::i;:::-;2106:48;;1900:260;;;;;:::o;2165:222::-;2230:9;;;2251:10;;;2248:133;;;2303:10;2298:3;2294:20;2291:1;2284:31;2338:4;2335:1;2328:15;2366:4;2363:1;2356:15;2248:133;2165:222;;;;:::o",
-        "linkReferences": {}
-    },
-    "methodIdentifiers": {
-        "getPlayerStats(address)": "4fd66eae",
-        "operators(address)": "13e7c9d8",
-        "owner()": "8da5cb5b",
-        "pvpLosses(address)": "831cfafa",
-        "pvpWins(address)": "efe0a48e",
-        "recordPvPResult(address,address)": "c7445d91",
-        "recordTap(address,uint256)": "63f58981",
-        "renounceOwnership()": "715018a6",
-        "setOperator(address,bool)": "558a7297",
-        "totalPoints(address)": "0fac9100",
-        "transferOwnership(address)": "f2fde38b"
-    },
-    "rawMetadata": "{\"compiler\":{\"version\":\"0.8.24+commit.e11b9ed9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"initialOwner\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"NotOperator\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"SamePlayer\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroAddress\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"enabled\",\"type\":\"bool\"}],\"name\":\"OperatorSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"winner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"loser\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"winnerTotal\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"loserTotal\",\"type\":\"uint256\"}],\"name\":\"PvPResultRecorded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"total\",\"type\":\"uint256\"}],\"name\":\"TapRecorded\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"}],\"name\":\"getPlayerStats\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"points\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"wins\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"losses\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"operators\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"pvpLosses\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"pvpWins\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"winner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"loser\",\"type\":\"address\"}],\"name\":\"recordPvPResult\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"recordTap\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"enabled\",\"type\":\"bool\"}],\"name\":\"setOperator\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"totalPoints\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"errors\":{\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}]},\"kind\":\"dev\",\"methods\":{\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"title\":\"MOANTAP \\u2014 On-chain score tracker for the MOANTAP tap game\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"operators(address)\":{\"notice\":\"Addresses authorised to call recordTap / recordPvPResult\"},\"recordPvPResult(address,address)\":{\"notice\":\"Record PvP match result \\u2014 winner +500, loser +200 consolation\"},\"recordTap(address,uint256)\":{\"notice\":\"Record tap score for a player (called by backend operator)\"},\"setOperator(address,bool)\":{\"notice\":\"Grant or revoke operator permission\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/MOANTAP.sol\":\"MOANTAP\"},\"evmVersion\":\"cancun\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\"]},\"sources\":{\"lib/openzeppelin-contracts/contracts/access/Ownable.sol\":{\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8ed324d3920bb545059d66ab97d43e43ee85fd3bd52e03e401f020afb0b120f6\",\"dweb:/ipfs/QmfEckWLmZkDDcoWrkEvMWhms66xwTLff9DDhegYpvHo1a\"]},\"lib/openzeppelin-contracts/contracts/utils/Context.sol\":{\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12\",\"dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF\"]},\"src/MOANTAP.sol\":{\"keccak256\":\"0x94a99bb722198a785cc249d7bfdff4593a5f13c393d1e768b9ddcf531b28b2f2\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1d125be87bdf31fbce8d7da1de213aabc9a45b4c12b111f98936f847d476c53c\",\"dweb:/ipfs/QmPFhMhVp9rykLMG3n56HPJW1XxYBwQK2KxfnsMQT3Yskk\"]}},\"version\":1}",
-    "metadata": {
-        "compiler": {
-            "version": "0.8.24+commit.e11b9ed9"
-        },
-        "language": "Solidity",
-        "output": {
-            "abi": [
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "initialOwner",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "constructor"
-                },
-                {
-                    "inputs": [],
-                    "type": "error",
-                    "name": "NotOperator"
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "owner",
-                            "type": "address"
-                        }
-                    ],
-                    "type": "error",
-                    "name": "OwnableInvalidOwner"
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "account",
-                            "type": "address"
-                        }
-                    ],
-                    "type": "error",
-                    "name": "OwnableUnauthorizedAccount"
-                },
-                {
-                    "inputs": [],
-                    "type": "error",
-                    "name": "SamePlayer"
-                },
-                {
-                    "inputs": [],
-                    "type": "error",
-                    "name": "ZeroAddress"
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "operator",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "enabled",
-                            "type": "bool",
-                            "indexed": false
-                        }
-                    ],
-                    "type": "event",
-                    "name": "OperatorSet",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "previousOwner",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "newOwner",
-                            "type": "address",
-                            "indexed": true
-                        }
-                    ],
-                    "type": "event",
-                    "name": "OwnershipTransferred",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "winner",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "loser",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "winnerTotal",
-                            "type": "uint256",
-                            "indexed": false
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "loserTotal",
-                            "type": "uint256",
-                            "indexed": false
-                        }
-                    ],
-                    "type": "event",
-                    "name": "PvPResultRecorded",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "player",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "amount",
-                            "type": "uint256",
-                            "indexed": false
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "total",
-                            "type": "uint256",
-                            "indexed": false
-                        }
-                    ],
-                    "type": "event",
-                    "name": "TapRecorded",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "player",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "getPlayerStats",
-                    "outputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "points",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "wins",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "losses",
-                            "type": "uint256"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "operators",
-                    "outputs": [
-                        {
-                            "internalType": "bool",
-                            "name": "",
-                            "type": "bool"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "owner",
-                    "outputs": [
-                        {
-                            "internalType": "address",
-                            "name": "",
-                            "type": "address"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "pvpLosses",
-                    "outputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "",
-                            "type": "uint256"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "pvpWins",
-                    "outputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "",
-                            "type": "uint256"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "winner",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "loser",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "recordPvPResult"
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "player",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "amount",
-                            "type": "uint256"
-                        }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "recordTap"
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "renounceOwnership"
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "operator",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "enabled",
-                            "type": "bool"
-                        }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "setOperator"
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "totalPoints",
-                    "outputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "",
-                            "type": "uint256"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "newOwner",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "transferOwnership"
-                }
-            ],
-            "devdoc": {
-                "kind": "dev",
-                "methods": {
-                    "owner()": {
-                        "details": "Returns the address of the current owner."
-                    },
-                    "renounceOwnership()": {
-                        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
-                    },
-                    "transferOwnership(address)": {
-                        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
-                    }
-                },
-                "version": 1
-            },
-            "userdoc": {
-                "kind": "user",
-                "methods": {
-                    "operators(address)": {
-                        "notice": "Addresses authorised to call recordTap / recordPvPResult"
-                    },
-                    "recordPvPResult(address,address)": {
-                        "notice": "Record PvP match result — winner +500, loser +200 consolation"
-                    },
-                    "recordTap(address,uint256)": {
-                        "notice": "Record tap score for a player (called by backend operator)"
-                    },
-                    "setOperator(address,bool)": {
-                        "notice": "Grant or revoke operator permission"
-                    }
-                },
-                "version": 1
-            }
-        },
-        "settings": {
-            "remappings": [
-                "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
-                "erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
-                "forge-std/=lib/forge-std/src/",
-                "halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/",
-                "openzeppelin-contracts/=lib/openzeppelin-contracts/"
-            ],
-            "optimizer": {
-                "enabled": true,
-                "runs": 200
-            },
-            "metadata": {
-                "bytecodeHash": "ipfs"
-            },
-            "compilationTarget": {
-                "src/MOANTAP.sol": "MOANTAP"
-            },
-            "evmVersion": "cancun",
-            "libraries": {}
-        },
-        "sources": {
-            "lib/openzeppelin-contracts/contracts/access/Ownable.sol": {
-                "keccak256": "0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb",
-                "urls": [
-                    "bzz-raw://8ed324d3920bb545059d66ab97d43e43ee85fd3bd52e03e401f020afb0b120f6",
-                    "dweb:/ipfs/QmfEckWLmZkDDcoWrkEvMWhms66xwTLff9DDhegYpvHo1a"
-                ],
-                "license": "MIT"
-            },
-            "lib/openzeppelin-contracts/contracts/utils/Context.sol": {
-                "keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
-                "urls": [
-                    "bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12",
-                    "dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
-                ],
-                "license": "MIT"
-            },
-            "src/MOANTAP.sol": {
-                "keccak256": "0x94a99bb722198a785cc249d7bfdff4593a5f13c393d1e768b9ddcf531b28b2f2",
-                "urls": [
-                    "bzz-raw://1d125be87bdf31fbce8d7da1de213aabc9a45b4c12b111f98936f847d476c53c",
-                    "dweb:/ipfs/QmPFhMhVp9rykLMG3n56HPJW1XxYBwQK2KxfnsMQT3Yskk"
-                ],
-                "license": "MIT"
-            }
-        },
-        "version": 1
-    },
-    "id": 42
+    ]
 }

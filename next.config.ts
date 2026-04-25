@@ -2,11 +2,17 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   webpack(config) {
-    // wagmi v3 tempo connectors do `import('accounts').catch(...)` — webpack can't
-    // resolve it at build time. Stub it out so the catch branch runs as intended.
+    // @wagmi/connectors lists several optional peer deps that aren't always installed.
+    // Stub them out so webpack falls through to the catch() branch as intended.
     config.resolve.alias = {
       ...config.resolve.alias,
       accounts: false,
+      porto: false,
+      'porto/internal': false,
+      '@coinbase/wallet-sdk': false,
+      '@base-org/account': false,
+      '@safe-global/safe-apps-provider': false,
+      '@safe-global/safe-apps-sdk': false,
     };
     return config;
   },

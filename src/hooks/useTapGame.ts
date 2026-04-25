@@ -10,6 +10,7 @@ import {
   MAX_ENERGY,
   ENERGY_REGEN_INTERVAL,
 } from '@/lib/tapLogic';
+import { useUser } from '@/contexts/UserContext';
 import { createBotDetector } from '@/hooks/useBotDetection';
 
 export function useTapGame() {
@@ -35,6 +36,12 @@ export function useTapGame() {
   const asset = getMoanAsset(moanState)
   const staleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const regenTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Session tracking refs (reset each time score resets)
+  const tapsRef = useRef(0)
+  const maxComboRef = useRef(0)
+  const sessionStartRef = useRef(Date.now())
+  const submittedRef = useRef(false)
   const botDetection = useMemo(() => createBotDetector(), [])
 
   // Energy regen — returns amount gained so component can show floating text
@@ -80,12 +87,38 @@ export function useTapGame() {
     }, 800)
   }, [resetCombo])
 
-  // Persist best score to user store
+  // Persist best score to user store (localStorage)
   const syncScore = useCallback((currentScore: number) => {
     if (!currentUserWallet) return
     updateScore(currentUserWallet, currentScore)
     addTaps(currentUserWallet, 1)
   }, [currentUserWallet, updateScore, addTaps])
+
+  // Submit session to Supabase + onchain via API
+  const submitScore = useCallback(async () => {
+    const wallet = useUserStore.getState().currentUserWallet
+    if (!wallet || submittedRef.current) return
+    const finalScore = useGameStore.getState().score
+    if (finalScore === 0) return
+    submittedRef.current = true
+
+    const duration = Math.floor((Date.now() - sessionStartRef.current) / 1000)
+    try {
+      await fetch('/api/scores', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          wallet_address: wallet,
+          score: finalScore,
+          taps: tapsRef.current,
+          max_combo: maxComboRef.current,
+          session_duration: duration,
+        }),
+      })
+    } catch {
+      // fire-and-forget — don't crash the game
+    }
+  }, [])
 
   const handleTap = useCallback((x: number, y: number): number => {
     if (isBotPaused) return 0
@@ -107,11 +140,20 @@ export function useTapGame() {
 
     const points = tap()
     if (points > 0) {
+      tapsRef.current += 1
+      const currentCombo = useGameStore.getState().combo
+      if (currentCombo > maxComboRef.current) maxComboRef.current = currentCombo
+
       syncScore(useGameStore.getState().score)
       resetStaleTimer()
+
+      // Auto-submit when energy hits 0 (game over)
+      if (useGameStore.getState().energy === 0) {
+        submitScore()
+      }
     }
     return points
-  }, [tap, syncScore, resetStaleTimer, isBotPaused, addBotStrike, botDetection])
+  }, [tap, syncScore, resetStaleTimer, submitScore, isBotPaused, addBotStrike, botDetection])
 
   const convertToCoins = useCallback((): { success: boolean; coins: number } => {
     const currentScore = useGameStore.getState().score
@@ -121,6 +163,33 @@ export function useTapGame() {
     resetScore()
     return { success: true, coins: currentScore }
   }, [currentUserWallet, addCoins, resetScore])
+
+  // Also submit on component unmount (user navigates away mid-session)
+  useEffect(() => {
+    submittedRef.current = false
+    tapsRef.current = 0
+    maxComboRef.current = 0
+    sessionStartRef.current = Date.now()
+    return () => {
+      const wallet = useUserStore.getState().currentUserWallet
+      if (!wallet || submittedRef.current) return
+      const finalScore = useGameStore.getState().score
+      if (finalScore === 0) return
+      submittedRef.current = true
+      const duration = Math.floor((Date.now() - sessionStartRef.current) / 1000)
+      fetch('/api/scores', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          wallet_address: wallet,
+          score: finalScore,
+          taps: tapsRef.current,
+          max_combo: maxComboRef.current,
+          session_duration: duration,
+        }),
+      }).catch(() => { /* ignore */ })
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     score,
@@ -137,5 +206,6 @@ export function useTapGame() {
     isBotPaused,
     convertToCoins,
     addScore: addScoreAction,
+    submitScore,
   }
 }
