@@ -47,11 +47,13 @@ function FloatingScore({ point }: { point: FloatingPoint }) {
 }
 
 export default function MoanTap() {
-  const { moanState, asset, handleTap } = useTapGame();
+  const { moanState, asset, handleTap, hasEnergy } = useTapGame();
   const [floatingPoints, setFloatingPoints] = useState<FloatingPoint[]>([]);
 
   const onTap = useCallback(
     (e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>) => {
+      if (!hasEnergy) return;
+
       const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
       let clientX: number;
       let clientY: number;
@@ -67,15 +69,16 @@ export default function MoanTap() {
       const x = clientX - rect.left;
       const y = clientY - rect.top;
 
-      handleTap();
+      const points = handleTap();
+      if (points <= 0) return;
 
       const id = Date.now() + Math.random();
-      setFloatingPoints((prev) => [...prev.slice(-8), { id, value: Math.floor(1 * 1), x, y }]);
+      setFloatingPoints((prev) => [...prev.slice(-8), { id, value: points, x, y }]);
       setTimeout(() => {
         setFloatingPoints((prev) => prev.filter((p) => p.id !== id));
       }, 700);
     },
-    [handleTap],
+    [handleTap, hasEnergy],
   );
 
   return (
@@ -83,12 +86,15 @@ export default function MoanTap() {
       <motion.button
         type="button"
         className="relative rounded-full touch-none focus:outline-none"
-        style={{ WebkitTapHighlightColor: 'transparent' }}
-        animate={{
-          ...(moanState === 'epic' ? PULSE_VARIANTS.epic : { scale: 1 }),
-          ...GLOW_VARIANTS[moanState],
+        style={{
+          WebkitTapHighlightColor: 'transparent',
+          opacity: hasEnergy ? 1 : 0.4,
         }}
-        whileTap={{ scale: 0.95 }}
+        animate={{
+          ...(moanState === 'epic' && hasEnergy ? PULSE_VARIANTS.epic : { scale: 1 }),
+          ...(hasEnergy ? GLOW_VARIANTS[moanState] : { boxShadow: 'none' }),
+        }}
+        whileTap={hasEnergy ? { scale: 0.95 } : undefined}
         transition={TAP_SPRING}
         onPointerDown={onTap}
       >
@@ -106,11 +112,22 @@ export default function MoanTap() {
         </AnimatePresence>
       </motion.button>
 
+      {!hasEnergy && (
+        <motion.p
+          className="mt-3 text-xs font-semibold"
+          style={{ color: colors.textMuted }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          Out of energy — wait to recharge
+        </motion.p>
+      )}
+
       {/* Pedestal */}
       <div
         className="mt-[-8px] h-3 w-32 rounded-[50%]"
         style={{
-          background: `radial-gradient(ellipse, ${colors.glowPurpleSoft}, transparent 70%)`,
+          background: `radial-gradient(ellipse, ${hasEnergy ? colors.glowPurpleSoft : 'transparent'}, transparent 70%)`,
           filter: 'blur(2px)',
         }}
       />
