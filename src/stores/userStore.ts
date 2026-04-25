@@ -12,6 +12,7 @@ interface UserState {
   getCurrentUser: () => MoanTapUser | null
   updateScore: (walletAddress: string, score: number) => void
   addTaps: (walletAddress: string, taps: number) => void
+  addCoins: (walletAddress: string, amount: number) => void
   setCurrentWallet: (wallet: string | null) => void
   getLeaderboard: (limit?: number) => MoanTapUser[]
 }
@@ -33,6 +34,7 @@ export const useUserStore = create<UserState>()(
           username: generateUsername(),
           bestScore: 0,
           totalTaps: 0,
+          coins: 0,
         }
 
         set((state) => ({
@@ -76,6 +78,23 @@ export const useUserStore = create<UserState>()(
               [key]: {
                 ...user,
                 totalTaps: user.totalTaps + taps,
+              },
+            },
+          }
+        })
+      },
+
+      addCoins: (walletAddress: string, amount: number) => {
+        const key = walletAddress.toLowerCase()
+        set((state) => {
+          const user = state.users[key]
+          if (!user) return state
+          return {
+            users: {
+              ...state.users,
+              [key]: {
+                ...user,
+                coins: user.coins + amount,
               },
             },
           }

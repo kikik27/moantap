@@ -30,6 +30,8 @@ interface GameState {
   resetCombo: () => void
   resetGame: () => void
   addBotStrike: (reason: string) => void
+  addScore: (points: number) => void
+  resetScore: () => void
 }
 
 export const useGameStore = create<GameState>()(
@@ -96,6 +98,14 @@ export const useGameStore = create<GameState>()(
           botPausedUntil: Date.now() + penalty,
           combo: 0,
         })
+      },
+
+      addScore: (points: number) => {
+        set((state) => ({ score: state.score + points }))
+      },
+
+      resetScore: () => {
+        set({ score: 0 })
       },
 
       resetGame: () => {

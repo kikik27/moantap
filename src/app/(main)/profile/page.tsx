@@ -85,9 +85,9 @@ export default function ProfilePage() {
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 gap-2">
-        <StatBlock label="Best Score" value={user?.bestScore != null ? fmt(user.bestScore) : '0'} icon="coin" />
+        <StatBlock label="Coins" value={user?.coins != null ? fmt(user.coins) : '0'} icon="coin" />
         <StatBlock label="Total Taps" value={user?.totalTaps != null ? fmt(user.totalTaps) : '0'} icon="tap" />
-        <StatBlock label="PvP Rank" value="--" icon="rank" />
+        <StatBlock label="Best Score" value={user?.bestScore != null ? fmt(user.bestScore) : '0'} icon="rank" />
         <StatBlock label="Win Rate" value="--" icon="trophy" />
       </div>
     </div>

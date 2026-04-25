@@ -25,8 +25,11 @@ export function useTapGame() {
   const resetCombo = useGameStore((s) => s.resetCombo)
   const addBotStrike = useGameStore((s) => s.addBotStrike)
   const botPausedUntil = useGameStore((s) => s.botPausedUntil)
+  const addScoreAction = useGameStore((s) => s.addScore)
+  const resetScore = useGameStore((s) => s.resetScore)
   const updateScore = useUserStore((s) => s.updateScore)
   const addTaps = useUserStore((s) => s.addTaps)
+  const addCoins = useUserStore((s) => s.addCoins)
   const currentUserWallet = useUserStore((s) => s.currentUserWallet)
 
   const asset = getMoanAsset(moanState)
@@ -110,6 +113,15 @@ export function useTapGame() {
     return points
   }, [tap, syncScore, resetStaleTimer, isBotPaused, addBotStrike, botDetection])
 
+  const convertToCoins = useCallback((): { success: boolean; coins: number } => {
+    const currentScore = useGameStore.getState().score
+    if (currentScore === 0 || !currentUserWallet) return { success: false, coins: 0 }
+
+    addCoins(currentUserWallet, currentScore)
+    resetScore()
+    return { success: true, coins: currentScore }
+  }, [currentUserWallet, addCoins, resetScore])
+
   return {
     score,
     combo,
@@ -123,5 +135,7 @@ export function useTapGame() {
     setOnEnergyRegen,
     botWarning,
     isBotPaused,
+    convertToCoins,
+    addScore: addScoreAction,
   }
 }

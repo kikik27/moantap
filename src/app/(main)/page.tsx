@@ -56,6 +56,9 @@ export default function HomePage() {
       {/* Coin balance */}
       <CoinBalance />
 
+      {/* Convert button */}
+      <ConvertButton />
+
       {/* Tap area */}
       <div className="flex flex-1 items-center justify-center">
         <motion.div
@@ -86,6 +89,59 @@ function CoinBalance() {
       <span className="text-2xl font-bold tabular-nums" style={{ color: colors.textPrimary }}>
         {fmt(score)}
       </span>
+    </div>
+  );
+}
+
+function ConvertButton() {
+  const { score, convertToCoins } = useTapGame();
+  const [converting, setConverting] = useState(false);
+  const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
+
+  const handleConvert = () => {
+    if (score === 0) return;
+    setConverting(true);
+    setTimeout(() => {
+      const { success, coins } = convertToCoins();
+      setConverting(false);
+      if (success) {
+        setConvertedAmount(coins);
+        setTimeout(() => setConvertedAmount(null), 2000);
+      }
+    }, 1200);
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <button
+        type="button"
+        onClick={handleConvert}
+        disabled={score === 0 || converting}
+        className="flex items-center gap-2 rounded-xl px-5 py-2 text-xs font-bold transition-all active:scale-95 disabled:opacity-30"
+        style={{
+          background: converting ? `${colors.primary}30` : gradients.primary,
+          boxShadow: score > 0 && !converting ? shadows.glow : 'none',
+          color: '#fff',
+        }}
+      >
+        <Image src="/assets/coin.png" alt="" width={16} height={16} />
+        {converting ? 'Converting...' : 'Convert to Coins'}
+      </button>
+
+      <AnimatePresence>
+        {convertedAmount !== null && (
+          <motion.span
+            className="text-xs font-bold"
+            style={{ color: colors.gold }}
+            initial={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.8, ease: 'easeOut' }}
+          >
+            +{fmt(convertedAmount)} coins converted!
+          </motion.span>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
