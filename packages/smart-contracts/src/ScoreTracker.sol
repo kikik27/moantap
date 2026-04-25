@@ -31,7 +31,8 @@ contract ScoreTracker is Ownable {
         uint32 taps,
         uint32 maxCombo,
         uint32 duration,
-        uint64 timestamp
+        uint64 timestamp,
+        string username
     );
     event OperatorSet(address indexed operator, bool enabled);
 
@@ -67,14 +68,15 @@ contract ScoreTracker is Ownable {
         uint256 score,
         uint32 taps,
         uint32 maxCombo,
-        uint32 duration
+        uint32 duration,
+        string calldata username
     ) external onlyOperator {
         if (player == address(0)) revert ZeroAddress();
 
         uint64 ts = uint64(block.timestamp);
         _sessions[player].push(SessionScore(score, taps, maxCombo, duration, ts));
 
-        emit ScoreSubmitted(player, score, taps, maxCombo, duration, ts);
+        emit ScoreSubmitted(player, score, taps, maxCombo, duration, ts, username);
     }
 
     // ── Views ─────────────────────────────────────────────────────────────────

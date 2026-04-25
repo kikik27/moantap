@@ -30,14 +30,14 @@ contract MOANTAPTest is Test {
 
     function test_RecordTap() public {
         vm.prank(operator);
-        moantap.recordTap(playerA, 100);
+        moantap.recordTap(playerA, 100, "TestUser");
         (uint256 pts,,) = moantap.getPlayerStats(playerA);
         assertEq(pts, 100);
     }
 
     function test_RecordPvPResult() public {
         vm.prank(operator);
-        moantap.recordPvPResult(playerA, playerB);
+        moantap.recordPvPResult(playerA, playerB, "PlayerA", "PlayerB");
 
         (uint256 ptsA, uint256 winsA,) = moantap.getPlayerStats(playerA);
         (uint256 ptsB,, uint256 lossesB) = moantap.getPlayerStats(playerB);
@@ -51,20 +51,20 @@ contract MOANTAPTest is Test {
     function test_RecordTap_NotOperator_Reverts() public {
         vm.prank(playerA);
         vm.expectRevert(MOANTAP.NotOperator.selector);
-        moantap.recordTap(playerA, 100);
+        moantap.recordTap(playerA, 100, "TestUser");
     }
 
     function test_RecordPvPResult_SamePlayer_Reverts() public {
         vm.prank(operator);
         vm.expectRevert(MOANTAP.SamePlayer.selector);
-        moantap.recordPvPResult(playerA, playerA);
+        moantap.recordPvPResult(playerA, playerA, "A", "A");
     }
 
     // ── ScoreTracker ──────────────────────────────────────────────────────────
 
     function test_SubmitScore() public {
         vm.prank(operator);
-        scoreTracker.submitScore(playerA, 1234, 50, 10, 30);
+        scoreTracker.submitScore(playerA, 1234, 50, 10, 30, "TestUser");
 
         assertEq(scoreTracker.sessionCount(playerA), 1);
         ScoreTracker.SessionScore memory s = scoreTracker.latestSession(playerA);

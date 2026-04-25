@@ -5,14 +5,18 @@ import Image from 'next/image'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
 import { useUser } from '@/contexts/UserContext'
-import { colors, gradients } from '@/styles/design-tokens'
-import type { ReactNode } from 'react'
+import { colors } from '@/styles/design-tokens'
+import { type ReactNode, useEffect, useState } from 'react'
 
 export default function WalletGate({ children }: { children: ReactNode }) {
   const { isConnected } = useAccount()
   const { user, isLoading } = useUser()
+  const [mounted, setMounted] = useState(false)
 
-  const showGate = !isConnected || isLoading || !user
+  useEffect(() => { setMounted(true) }, [])
+
+  // Before hydration, never block — avoids SSR flash
+  const showGate = mounted && (!isConnected || isLoading || !user)
 
   return (
     <>

@@ -4,6 +4,8 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
+import { useCallback, useState } from 'react';
+import { useUserStore } from '@/stores/userStore';
 import { useCallback, useRef, useState } from 'react';
 import { useGameFeedback } from '@/hooks/useGameFeedback';
 import { useTapGame } from '@/hooks/useTapGame';
@@ -117,6 +119,7 @@ function computeSimpleSignals(energyA: number, energyB: number) {
 }
 
 export default function PvPBattleRealtime() {
+  const currentUserWallet = useUserStore((s) => s.currentUserWallet);
   const {
     phase,
     slot,
@@ -139,7 +142,7 @@ export default function PvPBattleRealtime() {
     const playerId = `player_${Date.now()}`;
     const playerName = user?.username ?? 'Player';
     connect(playerId, playerName);
-  }, [connect]);
+  }, [connect, currentUserWallet]);
 
   const handleCancelQueue = useCallback(() => {
     leave();
