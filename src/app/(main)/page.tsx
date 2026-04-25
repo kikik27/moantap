@@ -17,21 +17,11 @@ export default function HomePage() {
           <Image
             src="/assets/logo-moantap.png"
             alt="MOANTAP"
-            width={32}
-            height={32}
+            width={64}
+            height={64}
             className="h-8 w-8 object-contain"
             priority
           />
-          <span
-            className="text-lg font-black tracking-tight"
-            style={{
-              background: gradients.primary,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            MOANTAP
-          </span>
         </div>
 
         <div className="flex items-center gap-2">
