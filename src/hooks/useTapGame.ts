@@ -1,61 +1,89 @@
-// /hooks/useTapGame.ts
-
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { useGameStore } from '@/stores/gameStore';
+import { useUserStore } from '@/stores/userStore';
 import {
-  calculateMultiplier,
-  calculateTapScore,
   getMoanAsset,
+  calculateMultiplier,
   getMoanState,
-  updateCombo,
-  type MoanState,
+  MAX_ENERGY,
+  ENERGY_REGEN_INTERVAL,
 } from '@/lib/tapLogic';
 
-interface TapGameState {
-  score: number;
-  combo: number;
-  multiplier: number;
-  moanState: MoanState;
-  asset: string;
-  handleTap: () => void;
-}
+export function useTapGame() {
+  const score = useGameStore((s) => s.score)
+  const energy = useGameStore((s) => s.energy)
+  const combo = useGameStore((s) => s.combo)
+  const multiplier = useGameStore((s) => calculateMultiplier(s.combo))
+  const moanState = useGameStore((s) => getMoanState(s.combo))
+  const hasEnergy = useGameStore((s) => s.energy > 0)
+  const tap = useGameStore((s) => s.tap)
+  const regenEnergy = useGameStore((s) => s.regenEnergy)
+  const resetCombo = useGameStore((s) => s.resetCombo)
+  const updateScore = useUserStore((s) => s.updateScore)
+  const addTaps = useUserStore((s) => s.addTaps)
+  const currentUserWallet = useUserStore((s) => s.currentUserWallet)
 
-export function useTapGame(): TapGameState {
-  const [score, setScore] = useState(0);
-  const [combo, setCombo] = useState(0);
-  const lastTapTimeRef = useRef(0);
-  const staleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const asset = getMoanAsset(moanState)
+  const staleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const regenTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  const multiplier = calculateMultiplier(combo);
-  const moanState = getMoanState(combo);
-  const asset = getMoanAsset(moanState);
+  // Energy regen — returns amount gained so component can show floating text
+  const onEnergyRegenRef = useRef<((amount: number) => void) | null>(null)
 
+  useEffect(() => {
+    regenTimerRef.current = setInterval(() => {
+      const gained = regenEnergy()
+      if (gained > 0 && onEnergyRegenRef.current) {
+        onEnergyRegenRef.current(gained)
+      }
+    }, ENERGY_REGEN_INTERVAL)
+    return () => {
+      if (regenTimerRef.current) clearInterval(regenTimerRef.current)
+    }
+  }, [regenEnergy])
+
+  const setOnEnergyRegen = useCallback((fn: (amount: number) => void) => {
+    onEnergyRegenRef.current = fn
+  }, [])
+
+  // Combo stale reset
   const resetStaleTimer = useCallback(() => {
     if (staleTimerRef.current !== null) {
-      clearTimeout(staleTimerRef.current);
+      clearTimeout(staleTimerRef.current)
     }
     staleTimerRef.current = setTimeout(() => {
-      setCombo(0);
-    }, 800);
-  }, []);
+      resetCombo()
+    }, 800)
+  }, [resetCombo])
 
-  const handleTap = useCallback(() => {
-    const now = Date.now();
+  // Persist best score to user store
+  const syncScore = useCallback((currentScore: number) => {
+    if (!currentUserWallet) return
+    updateScore(currentUserWallet, currentScore)
+    addTaps(currentUserWallet, 1)
+  }, [currentUserWallet, updateScore, addTaps])
 
-    setCombo((prevCombo) => {
-      const newCombo = updateCombo(prevCombo, lastTapTimeRef.current, now);
-      const newMultiplier = calculateMultiplier(newCombo);
-      const points = calculateTapScore(newMultiplier);
+  const handleTap = useCallback((): number => {
+    const points = tap()
+    if (points > 0) {
+      syncScore(useGameStore.getState().score)
+      resetStaleTimer()
+    }
+    return points
+  }, [tap, syncScore, resetStaleTimer])
 
-      setScore((prev) => prev + points);
-
-      return newCombo;
-    });
-
-    lastTapTimeRef.current = now;
-    resetStaleTimer();
-  }, [resetStaleTimer]);
-
-  return { score, combo, multiplier, moanState, asset, handleTap };
+  return {
+    score,
+    combo,
+    multiplier,
+    moanState,
+    asset,
+    energy,
+    maxEnergy: MAX_ENERGY,
+    hasEnergy,
+    handleTap,
+    setOnEnergyRegen,
+  }
 }

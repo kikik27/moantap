@@ -1,5 +1,3 @@
-// /lib/tapLogic.ts — Pure tap game logic (no React)
-
 import type { MoanState } from '@/types/tap';
 export type { MoanState };
 
@@ -25,6 +23,17 @@ const MOAN_ASSET_MAP: Record<MoanState, string> = {
   epic: '/assets/moan/epic.png',
 };
 
+export const TAP_POINTS: Record<MoanState, number> = {
+  idle: 1,
+  tapping: 2,
+  charging: 3,
+  epic: 4,
+};
+
+export const MAX_ENERGY = 1000;
+export const ENERGY_REGEN_AMOUNT = 10; // per tick
+export const ENERGY_REGEN_INTERVAL = 60_000; // 1 minute
+
 export function calculateMultiplier(combo: number): number {
   for (const { min, value } of MULTIPLIER_THRESHOLDS) {
     if (combo >= min) return value;
@@ -34,6 +43,10 @@ export function calculateMultiplier(combo: number): number {
 
 export function calculateTapScore(multiplier: number): number {
   return Math.floor(1 * multiplier);
+}
+
+export function calculateStatePoints(state: MoanState, multiplier: number): number {
+  return Math.floor(TAP_POINTS[state] * multiplier);
 }
 
 export function updateCombo(
