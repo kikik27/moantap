@@ -4,4 +4,5 @@ export interface MoanTapUser {
   username: string
   bestScore: number
   totalTaps: number
+  coins: number
 }

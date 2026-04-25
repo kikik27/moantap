@@ -4,8 +4,9 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useGameFeedback } from '@/hooks/useGameFeedback';
+import { useTapGame } from '@/hooks/useTapGame';
 import { usePvPSocket, type PvPPhase } from '@/hooks/usePvPSocket';
 import { getMoanStateFromEnergy } from '@/lib/battleLogic';
 import { getMoanAsset, type MoanState } from '@/lib/tapLogic';
@@ -130,7 +131,9 @@ export default function PvPBattleRealtime() {
 
   const feedback = useGameFeedback();
   const { user } = useUser();
+  const { addScore } = useTapGame();
   const [floatingPoints, setFloatingPoints] = useState<FloatingPoint[]>([]);
+  const rewardGivenRef = useRef(false);
 
   const handleStartPvP = useCallback(() => {
     const playerId = `player_${Date.now()}`;
@@ -140,6 +143,7 @@ export default function PvPBattleRealtime() {
 
   const handleCancelQueue = useCallback(() => {
     leave();
+    rewardGivenRef.current = false;
   }, [leave]);
 
   const onPlayerTap = useCallback(
@@ -257,6 +261,11 @@ export default function PvPBattleRealtime() {
     const label = isWin ? 'YOU WIN' : state.winner === null ? 'DRAW' : 'YOU LOSE';
     const color = isWin ? colors.gold : colors.secondary;
 
+    if (isWin && !rewardGivenRef.current) {
+      rewardGivenRef.current = true;
+      addScore(1000);
+    }
+
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-6 py-12">
         <motion.span
@@ -268,6 +277,18 @@ export default function PvPBattleRealtime() {
         >
           {label}
         </motion.span>
+
+        {isWin && (
+          <motion.div
+            className="rounded-xl px-4 py-1.5 text-sm font-bold"
+            style={{ background: `${colors.gold}20`, color: colors.gold, border: `1px solid ${colors.gold}40` }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            +1,000 points reward!
+          </motion.div>
+        )}
 
         <div className="flex gap-6 text-sm" style={{ color: colors.textMuted }}>
           <span>Your energy: {slot === 'A' ? state.energyA : state.energyB}</span>

@@ -29,6 +29,7 @@ export function findOrCreateUser(walletAddress: string): MoanTapUser {
     username: generateUsername(),
     bestScore: 0,
     totalTaps: 0,
+    coins: 0,
   }
 
   users[key] = user
