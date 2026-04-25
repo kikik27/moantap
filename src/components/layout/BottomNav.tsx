@@ -63,7 +63,7 @@ function BottomNav() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-40 backdrop-blur-xl"
+      className="fixed inset-x-0 bottom-0 z-39 backdrop-blur-xl"
       style={{
         paddingBottom: SAFE_BOTTOM,
         background: `linear-gradient(180deg, ${colors.surface}ee, ${colors.bg}f8)`,

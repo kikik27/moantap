@@ -65,9 +65,9 @@ export default function LoadingScreen() {
           <Image
             src="/assets/logo-moantap.png"
             alt="MOANTAP"
-            width={120}
-            height={120}
-            className="h-[120px] w-[120px] object-contain"
+            width={160}
+            height={160}
+            className="h-[160px] w-[160px] object-contain"
             priority
           />
         </motion.div>
@@ -75,21 +75,11 @@ export default function LoadingScreen() {
 
       {/* Brand text */}
       <motion.div
-        className="relative z-10 mt-6 flex flex-col items-center gap-2"
+        className="relative z-10 flex flex-col items-center gap-2"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
       >
-        <h1
-          className="text-2xl font-black tracking-tight"
-          style={{
-            background: gradients.primary,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
-        >
-          MOANTAP
-        </h1>
         <motion.p
           className="text-[10px] font-medium tracking-[0.3em]"
           style={{ color: colors.textMuted }}

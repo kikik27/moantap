@@ -2,15 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-
-const STATS = [
-  { label: 'Total Score', value: '24,580' },
-  { label: 'Wins', value: '12' },
-  { label: 'Losses', value: '3' },
-  { label: 'Win Rate', value: '80%' },
-  { label: 'Best Combo', value: '47' },
-  { label: 'Total Taps', value: '8,420' },
-] as const;
+import { useUser } from '@/contexts/UserContext';
+import { useAccount } from 'wagmi';
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
@@ -22,6 +15,18 @@ function StatCard({ label, value }: { label: string; value: string }) {
 }
 
 export default function ProfilePage() {
+  const { user } = useUser();
+  const { address } = useAccount();
+
+  const shortAddress = address
+    ? `${address.slice(0, 6)}...${address.slice(-4)}`
+    : '';
+
+  const STATS = [
+    { label: 'Best Score', value: user?.bestScore.toLocaleString() ?? '0' },
+    { label: 'Total Taps', value: user?.totalTaps.toLocaleString() ?? '0' },
+  ] as const;
+
   return (
     <div className="flex flex-1 flex-col items-center gap-6 py-8">
       {/* Avatar */}
@@ -49,32 +54,18 @@ export default function ProfilePage() {
         </div>
       </motion.div>
 
-      {/* Name + Level */}
+      {/* Name */}
       <div className="flex flex-col items-center gap-1">
-        <h2 className="text-xl font-black text-white">MoanLord</h2>
-        <span className="rounded-full bg-purple-500/20 px-3 py-0.5 text-[10px] font-semibold text-purple-300">
-          LVL 7
-        </span>
+        <h2 className="text-xl font-black text-white">{user?.username ?? 'Loading...'}</h2>
+        <span className="text-xs text-white/30 font-mono">{shortAddress}</span>
       </div>
 
       {/* Stats grid */}
-      <div className="grid w-full grid-cols-3 gap-2">
+      <div className="grid w-full grid-cols-2 gap-2">
         {STATS.map((stat) => (
           <StatCard key={stat.label} label={stat.label} value={stat.value} />
         ))}
       </div>
-
-      {/* Wallet connect */}
-      <button
-        type="button"
-        className="mt-2 w-full rounded-xl px-6 py-3 text-sm font-semibold text-white transition-colors active:scale-[0.98]"
-        style={{
-          background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
-          boxShadow: '0 4px 16px rgba(139,92,246,0.3)',
-        }}
-      >
-        Connect Wallet
-      </button>
     </div>
   );
 }

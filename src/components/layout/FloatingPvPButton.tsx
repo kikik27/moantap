@@ -14,7 +14,7 @@ function FloatingPvPButton() {
 
   return (
     <div
-      className="pointer-events-none fixed inset-x-0 z-50 flex justify-center"
+      className="pointer-events-none fixed inset-x-0 z-40 flex justify-center"
       style={{ bottom: layout.navHeight - BUTTON_OFFSET_Y }}
     >
       <Link href="/pvp" className="pointer-events-auto">
