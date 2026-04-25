@@ -44,6 +44,9 @@ export function usePvPSocket(): UsePvPSocketReturn {
 
   const clientRef = useRef<WsClient | null>(null);
   const slotRef = useRef<PlayerSlot | null>(null);
+  // Wallet addresses for match submission (set when connect() is called)
+  const myWalletRef = useRef<string | null>(null);
+  const opponentWalletRef = useRef<string | null>(null);
 
   const handleMessage = useCallback((msg: ServerMessage) => {
     switch (msg.type) {
@@ -52,6 +55,8 @@ export function usePvPSocket(): UsePvPSocketReturn {
         setSlot(msg.slot);
         slotRef.current = msg.slot;
         setOpponent(msg.opponent);
+        // Opponent's playerId is their wallet address (set in PvPBattleRealtime)
+        opponentWalletRef.current = msg.opponent.id;
         setPhase('matched');
         // Brief matched state, then countdown arrives from server
         break;
@@ -73,6 +78,25 @@ export function usePvPSocket(): UsePvPSocketReturn {
       case 'GAME_END':
         setState(msg.finalState);
         setPhase('ended');
+        // Slot A submits match result (avoids duplicate DB rows)
+        if (
+          slotRef.current === 'A' &&
+          myWalletRef.current &&
+          opponentWalletRef.current &&
+          /^0x[0-9a-fA-F]{40}$/.test(myWalletRef.current) &&
+          /^0x[0-9a-fA-F]{40}$/.test(opponentWalletRef.current)
+        ) {
+          fetch('/api/matches', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              player_a_wallet: myWalletRef.current,
+              player_b_wallet: opponentWalletRef.current,
+              player_a_score: msg.finalState.tapsA,
+              player_b_score: msg.finalState.tapsB,
+            }),
+          }).catch(() => { /* ignore */ });
+        }
         break;
 
       case 'OPPONENT_LEFT':
@@ -94,6 +118,7 @@ export function usePvPSocket(): UsePvPSocketReturn {
 
   const connect = useCallback(
     (playerId: string, playerName: string) => {
+      myWalletRef.current = playerId;
       setError(null);
       setPhase('connecting');
 
