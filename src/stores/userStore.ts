@@ -87,7 +87,9 @@ export const useUserStore = create<UserState>()(
       },
 
       getLeaderboard: (limit = 20) => {
-        return Object.values(get().users)
+        const users = get().users
+        if (!users) return []
+        return Object.values(users)
           .sort((a, b) => b.bestScore - a.bestScore)
           .slice(0, limit)
       },

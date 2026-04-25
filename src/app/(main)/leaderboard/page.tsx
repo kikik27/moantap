@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { useUser } from '@/contexts/UserContext';
 import { colors } from '@/styles/design-tokens';
 
+const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n);
+
 interface LeaderboardEntry {
   rank: number;
   name: string;
@@ -83,7 +85,7 @@ export default function LeaderboardPage() {
                 {entry.name}
               </span>
               <span className="text-[9px] font-bold tabular-nums" style={{ color }}>
-                {entry.score.toLocaleString()}
+                {fmt(entry.score)}
               </span>
               <div
                 className="w-14 rounded-t-lg"
@@ -141,7 +143,7 @@ export default function LeaderboardPage() {
               </span>
 
               <span className="text-xs font-semibold tabular-nums" style={{ color: colors.textSecondary }}>
-                {entry.score.toLocaleString()}
+                {fmt(entry.score)}
               </span>
             </motion.div>
           );
